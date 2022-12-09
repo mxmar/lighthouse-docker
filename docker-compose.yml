@@ -36,10 +36,13 @@ services:
     beacon_node:
         image: sigp/lighthouse:latest
         container_name: beacon
+        depends_on:
+            - geth
         volumes:
             - ./lighthouse-data:/root/.lighthouse
             - ./scripts:/root/scripts:ro
             - ./jwttoken:/root/jwttoken:ro
+            - ./configs:/configs:ro
         ports:
             - 5052:5052/tcp
             - 5053:5053/tcp
@@ -50,18 +53,18 @@ services:
         command: sh /root/scripts/start-beacon-node.sh
         restart: on-failure
         stop_grace_period: 3m
-
-    validator_client:
-        image: sigp/lighthouse:latest
-        volumes:
-            - ./lighthouse-data:/root/.lighthouse
-            - ./scripts:/root/scripts:ro
-            - ./validator_keys:/root/validator_keys:ro
-        depends_on:
-            - beacon_node
-        ports:
-            - 5064:5064/tcp     # metrics endpoint
-        env_file: .env
-        command: sh /root/scripts/start-validator-client.sh
-        restart: on-failure
-        stop_grace_period: 3m
+#
+#    validator_client:
+#        image: sigp/lighthouse:latest
+#        volumes:
+#            - ./lighthouse-data:/root/.lighthouse
+#            - ./scripts:/root/scripts:ro
+#            - ./validator_keys:/root/validator_keys:ro
+#        depends_on:
+#            - beacon_node
+#        ports:
+#            - 5064:5064/tcp     # metrics endpoint
+#        env_file: .env
+#        command: sh /root/scripts/start-validator-client.sh
+#        restart: on-failure
+#        stop_grace_period: 3m
