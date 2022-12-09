@@ -58,7 +58,7 @@ fi
 
 exec lighthouse \
 	--debug-level $DEBUG_LEVEL \
-	--network $NETWORK \
+	--testnet-dir $NETWORK \
 	beacon_node \
 	--http \
 	--http-address 0.0.0.0 \
